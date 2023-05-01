@@ -1,1 +1,3 @@
-# mars_project_back_node
+#개화팀 마스외전 프로젝트
+
+Node.js
