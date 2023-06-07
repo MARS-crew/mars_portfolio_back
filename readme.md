@@ -15,6 +15,11 @@ $ npm -v
 ``` 
 $ npm install nodemon -g //nodemon 설치
 $ npm start //서버 실행
+
+현재 로컬 포트 8080
+http://localhost:8080/
+hello world까지 확인
+
 ``` 
 ### folder structure
 ``` 
