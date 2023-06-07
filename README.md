@@ -1,3 +1,7 @@
-# 개화팀 마스외전 프로젝트
+# mars_portfolio_back
 
-Node.js
+### Node.js version
+
+### npm version
+
+### server start
