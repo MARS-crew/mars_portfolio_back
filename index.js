@@ -1,15 +1,13 @@
 const express= require('express');
 const app = express();
+//const app = require('./src/routes/home/portfolio');
+
 
 app.get('/',(req,res) => {
-    res.send('Hello wordl')
+    res.send('Hello world')
 })
 
-//포트폴리오 조회
+//포트폴리오 라우터
+app.use('/portfolio' ,require('./src/routes/home/portfolio.js'));
 
-//포트폴리오 등록
-
-//포트폴리오 수정
-
-//포트폴리오 삭제
 module.exports = app;
