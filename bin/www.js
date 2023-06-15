@@ -1,7 +1,7 @@
 "ues strict";
 
 const app = require('../index');
-const port = 8080
+const port = 3000
 
 
 app.listen(port)
