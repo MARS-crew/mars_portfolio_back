@@ -1,26 +1,55 @@
-const maria = require('../../config/db');
+const db = require('../../config/db');
 
-//포트폴리오 조회
-const selectRef = async (req, res) => {
-        try {
-            //mariadb 연결
-            const conn = await maria.getConnection();
-            // 쿼리 설정 및 실행
-            const rows = await conn.query('SELECT * FROM tbl_portfolio WHERE member_id = ?' , [req.params.member_id]);
-            console.log(rows); // 가져온 데이터 출력
-            res.json(rows); // 데이터를 JSON 형식으로 응답
-    
-            //연결 해제
-            conn.release();
-        } catch (err) {
-            console.error(err);
-            res.status(500).json({ error: '서버 오류' });
-        }
+const output = {
+    //포트폴리오 조회
+    'portfolio/:member_id' : (req,res) => {
+        var sql = 'SELECT * FROM tbl_portfolio WHERE member_id = ?';
+        db.query(sql, [req.params.member_id],function(err,rows) {
+            if(!err) {
+                if(rows != '') {
+                    res.send(rows);
+                } else {
+                    res.send(rows);
+                } 
+                console.log(req.params.member_id)
+            }
+        })
+    },
+    //포트폴리오 등록
+    'portfolio' : (req, res) => {
+        const member_id = req.body.member_id;
+        const file_id = req.body.file_id;
+        const kind = req.body.kind;
+        const url = req.body.url;
+        const title = req.body.title;
+        const description = req.body.description;
+        const reg_date = new Date();
+        const mod_date = new Date();
+
+        var sql = `INSERT INTO tbl_portfolio 
+        (member_id, file_id, kind, url, title, description,reg_date, mod_date) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`; 
+        var values = [member_id, file_id, kind, url, title, description, reg_date, mod_date];
+        db.query(sql, values, function(err) {
+            if(err) {
+                console.error(err);
+                return;
+            }else{
+                res.send("등록 성공");
+            }
+        })
+    },
+    test : (req,res) => {
+            res.send('dsfs');
+    }
 };
 
 //함수 설정 부분
-const Portfolio = {
-    selectRef
-  };
+const process = {
+    
+};
 
-module.exports = Portfolio;
+module.exports = {
+    output,
+    process
+};

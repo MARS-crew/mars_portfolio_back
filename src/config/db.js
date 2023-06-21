@@ -1,8 +1,9 @@
-//db설정
+//db 설정
 
-const maria = require('mariadb');
+const maria = require("mysql");
 
-const connection = maria.createPool({
+// 데이터베이스 connection 객체 생성
+const connection = maria.createConnection({
     host: 'mars-port.duckdns.org',
     port: 3306,
     user: 'root',
@@ -10,14 +11,10 @@ const connection = maria.createPool({
     database: 'Mars_portfolio'
 });
 
-//maria connection 실행
-connection.getConnection()
-    .then(conn => {
-        console.log("Successfully connected to the database. ")
-    })
-    .catch(err => {
-        console.log("database connecion failed")
-    })
+// maria connection 실행
+connection.connect(error=>{
+    if(error) throw error;
+    console.log("Successfully connected to the database. ");
+});
 
-
-module.exports = connection
+module.exports = connection;
