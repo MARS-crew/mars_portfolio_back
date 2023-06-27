@@ -19,6 +19,6 @@ router.post(apiUrl + '/review', reviewCtrl.process['insert']);
 router.put(apiUrl + '/review/:review_id', reviewCtrl.process['update']);
 router.delete(apiUrl + '/review/:review_id', reviewCtrl.process['delete']);
 router.patch(apiUrl + '/review/hide/:review_id', reviewCtrl.process['hide']);
-// router.post('/review/like', reviewCtrl.output['like']);
+router.post(apiUrl + '/review/like', reviewCtrl.process['like']);
 
 module.exports = router
