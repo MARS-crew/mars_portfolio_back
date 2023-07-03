@@ -84,7 +84,7 @@ const process = {
         var sql2 = 'insert into tbl_award(resume_id, date, name, issuer, del_yn, reg_date, mod_date) values(?, now(), ?, ?, ?, now(), now())';
         var sql3 = 'insert into tbl_interests(category_id, resume_id) values (?,?)';
         //카테고리
-        var sql4 = 'insert into tbl_specialty(category_id, resume_id) vlaues(?,?)';
+        var sql4 = 'insert into tbl_specialty(category_id, resume_id) values(?,?)';
         var sql5 = 'insert into tbl_career(resume_id, com_name, started_date, period,rank,duty,reg_date,mod_date) values(?, ?, ?, ?, ?, ?, now(), now())';
         var sql6 = 'insert into tbl_technology(resume_id, name,level, info,reg_date,mod_date) values(?,?,?,?, now(), now() )';
         db.query(sql, resumeData, function (err, rows) {
@@ -115,7 +115,7 @@ const process = {
    
     delete : (req, res) => {
         const member_id = 4;
-        var resume_id =13;
+        var resume_id =34;
         var sql = 'delete A,B,C,D from tbl_resume A RIGHT JOIN tbl_award B on A.resume_id = B.resume_id RIGHT JOIN tbl_career C on A.resume_id = C.resume_id RIGHT JOIN tbl_interests D on A.resume_id = D.resume_id where member_id = ? ';
         const data = [member_id, resume_id]
         db.query(sql, data, function (err,rows) {
@@ -171,7 +171,7 @@ const process = {
  
 
         var sql = 'update tbl_resume A set A.introduce = ?, A.postcode = ?, A.addr = ?, A.detail_addr = ?, A.email = ?, A.tel = ?, A.name= ? where A.member_id = ? and A.resume_id = ?'
-        var sql2 = 'update tbl_award B set B.name = ?, B.issure = ?, B.del_yn = ? where B.reusme_id = ?'
+        var sql2 = 'update tbl_award B set B.name = ?, B.issuer = ?, B.del_yn = ? where B.resume_id = ?'
         var sql3 = 'update tbl_interests C set C.category_id = ? where C.resume_id = ?'
         var sql4 = 'update tbl_specialty D set D.category_id = ? where D.resume_id = ?'
         var sql5 = 'update tbl_career E set E.com_name = ? , E.period = ?, E.rank = ?, E.started_date = ?, E.duty = ? where E.resume_id = ?'
