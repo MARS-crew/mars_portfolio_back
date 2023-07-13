@@ -29,5 +29,6 @@ router.get('/write', resumeCtrl.process.write)
 router.put('/update',resumeCtrl.process.update);
 router.get('/update', resumeCtrl.process.update);
 
+//마이페이지
 router.get('/count', myPageCtrl.output.count )
 module.exports = router

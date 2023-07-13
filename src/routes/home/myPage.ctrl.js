@@ -8,20 +8,25 @@ const output = {
         count : (req,res) => {
         var member_id = 3;
         var sql = 'select count(*) as count From tbl_visit where member_id = ?'
-        db.query(sql, [member_id], function(err,rows){
-            const count = rows[0].count;
-            if (!err) {
-                if (count != null) {
-                    res.send(setResponseJson(200, '성공', 'total count : ' + count));
+        var sql2 = 'select B.name, A.reg_date from tbl_visit A LEFT JOIN tbl_member B ON A.ref_member_id = B.member_id where A.member_id = ?'
+        db.query(sql, member_id, function(err,rows1){
+            db.query(sql2, member_id, (err,rows)=>{
+                const count = rows1[0].count;
+                if (!err) {
+                    if ( count != null && rows.length > 0 ) {
+                        res.send(setResponseJson(200, '성공', 'total count : ' + count + JSON.stringify(rows)));
+                    } else {
+                        res.send(setResponseJson(405, '실패', rows1, rows));
+                    }
                 } else {
-                    res.send(setResponseJson(405, '실패', rows));
+                    console.log('실패 err : ' + err);
+                    res.send(setResponseJson(404, '실패', err));
                 }
-            } else {
-                console.log('실패 err : ' + err);
-                res.send(setResponseJson(404, '실패', err));
-            }
+            })
         })
-    }
+    }, 
+
+
     }
 
 const process = {
