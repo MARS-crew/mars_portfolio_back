@@ -2,19 +2,22 @@ const express = require('express');
 const router = express.Router()
 const path = require('path')
 const db = require('../../config/db')
-const setResponseJson = require('../../utils/setResponseJson')
+const setResponseJson = require('../../utils/setResponseJson');
 
 
 
 const output = {
+
+
+
     'resume/:member_id': (req, res) => {
-        // const member_id = req.params.member_id;
-        var member_id = 3;
+        const member_id = req.params
+        //var member_id = 3;
         var sql = 'select * from tbl_resume A left join tbl_career B on A.resume_id = B.resume_id left join tbl_award C on A.resume_id = C.resume_id left join tbl_technology D on A.resume_id = D.resume_id left join tbl_specialty E on A.resume_id = E.resume_id left join tbl_interests F on A.resume_id = F.resume_id left join tbl_category G on G.category_id = E.category_id where A.member_id=? ';
         db.query(sql, [member_id], function (err, rows) {
             if (!err) {
-                if (rows.length > 0) {
-                    res.send(setResponseJson(200, '성공', rows));
+                if (rows.length != null) {
+                    res.send(setResponseJson(200, '성공', rows[3]));
                 } else {
                     res.send(setResponseJson(405, '실패', rows));
                 }
@@ -31,7 +34,25 @@ const output = {
 
     delete: (req,res) => {
         res.send();
+    },
+    count : (req,res) => {
+        var member_id = 3;
+        var sql = 'select count(*) as count From tbl_visit where member_id = ?'
+        db.query(sql, [member_id], function(err,rows){
+            const count = rows[0].count;
+            if (!err) {
+                if (count != null) {
+                    res.send(setResponseJson(200, '성공', 'total count : ' + count));
+                } else {
+                    res.send(setResponseJson(405, '실패', rows));
+                }
+            } else {
+                console.log('실패 err : ' + err);
+                res.send(setResponseJson(404, '실패', err));
+            }
+        })
     }
+
 }
 const process = {
 
@@ -39,20 +60,20 @@ const process = {
 
         var member_id = 4
         var resume_id = 38
-        var introduce = '안녕하세요?' //req.body.introduce
-        var postcode = '33333'
-        var addr = '수원시 장안구 장안동'
-        var detail_addr = 'sss'
-        var email = 'ssss@nmaver.com'
-        var tel = '012-5444-4444'
-        var member_name = '동배얌'
+        var introduce = req.body.introduce
+        var postcode = req.body.postcode
+        var addr = req.body.addr
+        var detail_addr = req.body.detail_addr
+        var email = req.body.email
+        var tel = req.body.tel
+        var member_name = req.body.member_name
 
         //공통
         var del_yn = 'N'
         
         //수상경력
         var name = '제 3056회 호떡 굽기 대회';
-        var issuer = '일등';
+        var issuer = req.body.issuer
 
         //카테고리
 
@@ -62,10 +83,10 @@ const process = {
         var specialCate = 5;
 
         //커리어
-        var com_name = '붕어빵타이쿤';
-        var period = '3년';
-        var rank = '사장';
-        var started_date = '1011-1'
+        var com_name = req.body.com_name
+        var period = req.body.period
+        var rank =  req.body.rank
+        var started_date = req.body.started_date
         var duty = '붕어빵 굽기';
         
         //기술
@@ -111,6 +132,7 @@ const process = {
             })
             
         });
+        
     },
    
     delete : (req, res) => {
@@ -133,41 +155,41 @@ const process = {
     },
 
     update : (req,res) =>{
-        var member_id = 4
-        var resume_id = 38
-        var introduce = '안녕인사는 됐어요' //req.body.introduce
-        var postcode = '33333'
-        var addr = '수원시 장안구 장안동'
-        var detail_addr = 'sss'
-        var email = 'ssss@nmaver.com'
-        var tel = '012-5444-4444'
-        var member_name  = '이민용'
+        var member_id = req.body.member_id
+        var resume_id = req.body.resume_id
+        var introduce = req.body.introduce
+        var postcode = req.body.postcode
+        var addr = req.body.addr
+        var detail_addr = req.body.detail_addr
+        var email = req.body.email
+        var tel = req.body.tel
+        var member_name  = req.body.member_name
 
          //공통
          var del_yn = 'N'
         
          //수상경력
-         var name = '왜 안바뀌니';
-         var issuer = '일등';
+         var name = req.body.name
+         var issuer = req.body.issuer
  
          //카테고리
  
          // 카테고리 - 관심분야
-         var interestsCate = 3;
+         var interestsCate = req.body.interestsCate
          // 카테고리 -전문분야
-         var specialCate = 9;
+         var specialCate = req.body.specialCate
  
          //커리어
-         var com_name = '동배컴퍼니';
-         var period = '3년';
-         var rank = '사원';
-         var started_date = '1011-1'
-         var duty = '퍼블리셔';
+         var com_name = req.body.com_name
+         var period = req.body.period
+         var rank = req.body.rank
+         var started_date = req.body.started_date
+         var duty = req.body.duty
          
          //기술
-         var tecName = 'SQL';
-         var tecLevel = 2;
-         var tecInfo = '상세정보';
+         var tecName = req.body.tecName
+         var tecLevel = req.body.tecLevel
+         var tecInfo = req.body.tecInfo
  
 
         var sql = 'update tbl_resume A set A.introduce = ?, A.postcode = ?, A.addr = ?, A.detail_addr = ?, A.email = ?, A.tel = ?, A.name= ? where A.member_id = ? and A.resume_id = ?'
@@ -185,19 +207,25 @@ const process = {
         const specialData = [specialCate, resume_id];
         const careerData = [com_name,started_date,period,rank,duty,resume_id];
         const technologyData = [tecName,tecLevel,tecInfo,resume_id]
-     
+        
 
-        db.query(sql, resumeData , function(err,rows) {
+        db.query(sql, resumeData , function(err,rows, fields) {
+            if(err || rows.length == 0 ) 
+                    console.log('실패')
+                    console.log(err,rows)
+                    console.log(introduce)
             db.query(sql2,awardData, function (err,rows){
                 db.query(sql3,interestsData, function(err,rows){
                     db.query(sql4, specialData , function(err,rows){
                         db.query(sql5, careerData , function(err,rows){
+                            
                             db.query(sql6, technologyData , function(err,rows){
                                 if (!err) {
-                                    if (rows != '') {
+                                    if (rows.length != null && rows.length == '') {
                                         res.send(setResponseJson(200, '성공', rows));
                                     } else {
                                         res.send(setResponseJson(405, '실패', rows));
+                                        console.log(err)
                                     }
                                 } else {
                                     console.log('실패 err : ' + err);
@@ -211,7 +239,9 @@ const process = {
             
         })
 
-    }
+    },
+
+   
 }
 
 module.exports = {

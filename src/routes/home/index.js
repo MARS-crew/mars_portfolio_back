@@ -2,7 +2,15 @@ const express = require('express')
 const router = express.Router()
 const path = require('path')
 const ctrl = require('./home.ctrl')
+const bodyParser = require('body-parser')
 const resumeCtrl = require('./resume.ctrl')
+const myPageCtrl = require('./myPage.ctrl')
+
+
+router.use(bodyParser.json())
+router.use(bodyParser.urlencoded({extended: true}));
+
+
 
 const apiUri = '/api/v1'
 
@@ -21,4 +29,5 @@ router.get('/write', resumeCtrl.process.write)
 router.put('/update',resumeCtrl.process.update);
 router.get('/update', resumeCtrl.process.update);
 
+router.get('/count', myPageCtrl.output.count )
 module.exports = router

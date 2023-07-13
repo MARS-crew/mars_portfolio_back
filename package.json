@@ -1,7 +1,7 @@
 {
   "name": "mars",
   "version": "1.0.0",
-  "description": "",
+  "description": "``` \r $ node -v\r v16.16.0\r ```",
   "main": "index.js",
   "scripts": {
     "start": "nodemon ./bin/www.js",
@@ -10,9 +10,22 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cookie-parser": "^1.4.6",
     "express": "^4.18.2",
     "mariadb": "^3.1.2",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.22"
-  }
+  },
+  "bin": {
+    "mars": "bin/www.js"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MARS-crew/mars_portfolio_back.git"
+  },
+  "bugs": {
+    "url": "https://github.com/MARS-crew/mars_portfolio_back/issues"
+  },
+  "homepage": "https://github.com/MARS-crew/mars_portfolio_back#readme"
 }
